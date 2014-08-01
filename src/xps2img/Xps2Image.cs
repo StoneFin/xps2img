@@ -64,7 +64,7 @@ namespace xps2img
             _xpsDocumentInMemoryStream.Write(byteArray, 0, byteArray.Length);
         }
 
-        public IEnumerable<Bitmap> ToBitmap(Parameters parameters)
+        public IEnumerable<byte[]> ToBitmap(Parameters parameters)
         {
             const string inMemoryPackageName = "memorystream://inmemory.xps";
             var packageUri = new Uri(inMemoryPackageName);
@@ -87,7 +87,7 @@ namespace xps2img
             }
         }
 
-        public static IEnumerable<Bitmap> ToBitmap(string filename, Parameters parameters)
+        public static IEnumerable<byte[]> ToBitmap(string filename, Parameters parameters)
         {
             using (var xpsConverter = new Xps2Image(filename))
             {
@@ -95,57 +95,57 @@ namespace xps2img
             }
         }
 
-        public static IEnumerable<Bitmap> ToBitmap(byte[] byteArray, Parameters parameters)
-        {
-            using (var xpsConverter = new Xps2Image(byteArray))
-            {
-                return xpsConverter.ToBitmap(parameters).ToList();
-            }
-        }
+        //public static IEnumerable<Bitmap> ToBitmap(byte[] byteArray, Parameters parameters)
+        //{
+        //    using (var xpsConverter = new Xps2Image(byteArray))
+        //    {
+        //        return xpsConverter.ToBitmap(parameters).ToList();
+        //    }
+        //}
 
-        public static IEnumerable<Bitmap> ToBitmap(Stream stream, Parameters parameters)
-        {
-            using (var xpsConverter = new Xps2Image(stream))
-            {
-                return xpsConverter.ToBitmap(parameters).ToList();
-            }
-        }
+        //public static IEnumerable<Bitmap> ToBitmap(Stream stream, Parameters parameters)
+        //{
+        //    using (var xpsConverter = new Xps2Image(stream))
+        //    {
+        //        return xpsConverter.ToBitmap(parameters).ToList();
+        //    }
+        //}
 
-        public static IEnumerable<Bitmap> ToBitmap(IEnumerable<string> filenames, Parameters parameters)
-        {
-            foreach (var filename in filenames)
-            {
-                using (var xpsConverter = new Xps2Image(filename))
-                {
-                    return xpsConverter.ToBitmap(parameters).ToList();
-                }
-            }
-            return new List<Bitmap>();
-        }
+        //public static IEnumerable<Bitmap> ToBitmap(IEnumerable<string> filenames, Parameters parameters)
+        //{
+        //    foreach (var filename in filenames)
+        //    {
+        //        using (var xpsConverter = new Xps2Image(filename))
+        //        {
+        //            return xpsConverter.ToBitmap(parameters).ToList();
+        //        }
+        //    }
+        //    return new List<Bitmap>();
+        //}
 
-        public static IEnumerable<Bitmap> ToBitmap(IEnumerable<Stream> streams, Parameters parameters)
-        {
-            foreach (var stream in streams)
-            {
-                using (var xpsConverter = new Xps2Image(stream))
-                {
-                    return xpsConverter.ToBitmap(parameters).ToList();
-                }
-            }
-            return new List<Bitmap>();
-        }
+        //public static IEnumerable<Bitmap> ToBitmap(IEnumerable<Stream> streams, Parameters parameters)
+        //{
+        //    foreach (var stream in streams)
+        //    {
+        //        using (var xpsConverter = new Xps2Image(stream))
+        //        {
+        //            return xpsConverter.ToBitmap(parameters).ToList();
+        //        }
+        //    }
+        //    return new List<Bitmap>();
+        //}
 
-        public static IEnumerable<Bitmap> ToBitmap(IEnumerable<byte[]> byteArrays, Parameters parameters)
-        {
-            foreach (var byteArray in byteArrays)
-            {
-                using (var xpsConverter = new Xps2Image(byteArray))
-                {
-                    return xpsConverter.ToBitmap(parameters).ToList();
-                }
-            }
-            return new List<Bitmap>();
-        }
+        //public static IEnumerable<Bitmap> ToBitmap(IEnumerable<byte[]> byteArrays, Parameters parameters)
+        //{
+        //    foreach (var byteArray in byteArrays)
+        //    {
+        //        using (var xpsConverter = new Xps2Image(byteArray))
+        //        {
+        //            return xpsConverter.ToBitmap(parameters).ToList();
+        //        }
+        //    }
+        //    return new List<Bitmap>();
+        //}
 
         //http://stackoverflow.com/questions/5730863/how-to-use-stream-copyto-on-net-framework-3-5
         private static void CopyTo(Stream input, Stream output)
@@ -159,7 +159,7 @@ namespace xps2img
             }
         }
 
-        private Bitmap ProcessPage(Parameters parameters, int docPageNumber)
+        private byte[] ProcessPage(Parameters parameters, int docPageNumber)
         {
             var bitmapEncoder = CreateEncoder(parameters.ImageType, parameters.ImageOptions);
             var bitmapSource = GetPageBitmap(_xpsDocumentPaginator, docPageNumber, parameters);
@@ -169,7 +169,7 @@ namespace xps2img
                 bitmapEncoder.Frames.Add(BitmapFrame.Create(bitmapSource));
                 bitmapEncoder.Save(stream);
 
-                return new Bitmap(stream);
+              return stream.ToArray();
             }
         }
 

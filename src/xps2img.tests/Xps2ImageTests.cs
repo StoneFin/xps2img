@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -82,6 +84,7 @@ namespace xps2img.tests
         [Test]
         public void TestConvertFromDisk()
         {
+
             using (var xpsConverter = new Xps2Image(_xpsSinglePage))
             {
                 var images = xpsConverter.ToBitmap(new Parameters

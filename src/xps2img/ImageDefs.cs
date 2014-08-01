@@ -32,7 +32,7 @@ namespace xps2img
         public readonly int JpegQualityLevel;
         public readonly TiffCompressOption TiffCompression;
 
-        public static readonly ImageOptions Default = new ImageOptions(85, TiffCompressOption.Zip);
+        public static readonly ImageOptions Default = new ImageOptions(85, TiffCompressOption.Lzw);
 
         public ImageOptions()
             : this(Default.JpegQualityLevel, Default.TiffCompression)
